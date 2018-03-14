@@ -29,8 +29,8 @@ CREATE TABLE passengers
 CREATE TABLE queries
   ( id INTEGER PRIMARY KEY
   , flightID VARCHAR(5) NOT NULL
-  , from VARCHAR(64) NOT NULL
-  , to VARCHAR(64) NOT NULL
+  , fromAirport VARCHAR(64) NOT NULL
+  , toAirport VARCHAR(64) NOT NULL
   , departure DATE NOT NULL
   , arrival DATE NOT NULL
   , availableSeats INTEGER NOT NULL
