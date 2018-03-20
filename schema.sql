@@ -1,16 +1,19 @@
 CREATE TABLE flights
   ( id INTEGER PRIMARY KEY
   , flightID VARCHAR(5) NOT NULL
-  , fromAirport VARCHAR(64) NOT NULL
-  , toAirport VARCHAR(64) NOT NULL
+  , origin VARCHAR(64) NOT NULL
+  , destination VARCHAR(64) NOT NULL
   , departure DATE NOT NULL
   , arrival DATE NOT NULL
   , ecoCapacity INTEGER NOT NULL
   , busCapacity INTEGER NOT NULL
   , airline VARCHAR(64) NOT NULL
+  , ecoPrice NUMERIC CHECK(ecoPrice > 0)
+  , busPrice NUMERIC CHECK(busPrice > 0)
   , UNIQUE(flightID)
   );
-INSERT INTO flights(flightID, fromAirport, toAirport, departure, arrival, ecoCapacity, busCapacity, airline) VALUES ('WW154', 'Reykjavik', 'London', '14-03-2018 07:00:00','14-03-2018 09:00:00', 180, 20, 'WOW air');
+INSERT INTO flights(flightID, origin, destination, departure, arrival, ecoCapacity, busCapacity, airline, ecoPrice, busPrice) VALUES ('WW154', 'Reykjavik', 'London', '14-03-2018 07:00:00','14-03-2018 09:00:00', 180, 20, 'WOW air', 9000, 22000);
+INSERT INTO flights(flightID, origin, destination, departure, arrival, ecoCapacity, busCapacity, airline, ecoPrice, busPrice) VALUES ('WW178', 'London', 'Reykjavik', '14-03-2018 15:00:00','14-03-2018 17:00:00', 180, 20, 'WOW air', 7000, 25000);
 
 CREATE TABLE passengers
   ( id INTEGER PRIMARY KEY
