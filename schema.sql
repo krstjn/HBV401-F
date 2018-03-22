@@ -28,17 +28,18 @@ CREATE TABLE passengers
   , UNIQUE(flightID, seat)
   );
 
-
+DROP TABLE IF EXISTS queries;
 CREATE TABLE queries
   ( id INTEGER PRIMARY KEY
-  , flightID VARCHAR(5) NOT NULL
-  , fromAirport VARCHAR(64) NOT NULL
-  , toAirport VARCHAR(64) NOT NULL
-  , departure DATE NOT NULL
-  , arrival DATE NOT NULL
-  , availableSeats INTEGER NOT NULL
+  , origin VARCHAR(64)
+  , destination VARCHAR(64)
+  , departureTime VARCHAR(64)
+  , departureDate DATE
+  , returnDate DATE
+  , availableSeats INTEGER CHECK(availableSeats > 0)
+  , seatingClass VARCHAR(64)
+  , maxPrice INTEGER CHECK(maxPrice > 0)
   , searchDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
-  , UNIQUE(flightID)
 );
 
 CREATE TABLE users
