@@ -7,10 +7,10 @@ public class Query {
     private String destination = null;
     private String departureTime = null;
     private Date departureDate = null;
-    private Date returnDate;
-    private String airline;
-    private String seatingClass;
-    private int maxPrice;
+    private Date returnDate = null;
+    private String airline = null;
+    private String seatingClass = null;
+    private int maxPrice = -1;
 
     /**
      * Smiður fyrir Query, ekki gert ráð fyrir neinni viðfangbreytu
@@ -83,44 +83,66 @@ public class Query {
     public void setDepartureDate(Date departureDate) {
         this.departureDate = departureDate;
     }
-
+    public void setMaxPrice(int maxPrice) {
+        this.maxPrice = maxPrice;
+    }
     /**
      * Getters sem notaðir eru til að búa til leitarstreng.
      */
     private String getReturnDateString() {
-        return "arrivalDate = " + returnDate;
+        if(returnDate == null) return null;
+        return "arrival = " + returnDate;
     }
     private String getOriginString() {
+        if(origin == null) return null;
         return "origin = " + origin;
     }
     private String getDestinationString() {
+        if(destination == null) return null;
         return "destination = " + destination;
     }
     private String getDepartureTimeString() {
+        if(departureTime == null) return "";
         return "departureTime = " + departureTime;
     }
     private String getAirlineString() {
+        if(airline == null) return null;
         return "airline = " + airline;
     }
     private String getSeatingClassString() {
+        if(seatingClass == null) return null;
         return "seatingClass = " + seatingClass;
     }
     private String getDepartureDateString() {
+        if(departureDate == null) return null;
         return "departureDate = " + departureDate;
     }
-    public void setMaxPrice(int maxPrice) {
-        this.maxPrice = maxPrice;
-    }
     private String getMaxPriceString() {
-        return "maxPrice = " + maxPrice;
+        if(maxPrice < 0) return null;
+        return "price <= " + maxPrice;
     }
 
     /**
      * Skilar streng sem verður verður settur inn í queries töfluna.
      * @return String
      */
-    public String getQuery(){
+    public String getQueries(){
         return "";
+    }
+
+    public String[] getFilters(){
+        String[] queries = {
+                getOriginString(),
+                getDestinationString(),
+                //getDepartureTimeString(),
+                //getDepartureDateString(),
+                //getReturnDateString(),
+                getAirlineString(),
+                getSeatingClassString(),
+                getMaxPriceString()
+        };
+
+        return queries;
     }
 
     /**
@@ -128,6 +150,17 @@ public class Query {
      * @return String
      */
     public String toString(){
-        return "";
+        String q = "SELECT * FROM flights WHERE ";
+        String[] filter = getFilters();
+        boolean first = true;
+        for(int i = 0; i <filter.length; i++){
+            if(filter[i] != null){
+                if(first) q += filter[i];
+                else q +=" AND " + filter[i];
+                first = false;
+            }
+        }
+        System.out.println(q);
+        return q;
     }
 }
