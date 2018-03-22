@@ -11,6 +11,8 @@ public class Flight {
     private String arrivalTime;
     private int ecoCapacity;
     private int busCapacity;
+    private int ecoPrice;
+    private int busPrice;
     private String airline;
     private ArrayList<Passenger> passengers;
 
@@ -19,23 +21,11 @@ public class Flight {
     }
 
     public boolean isFullEco() {
-        int count = 0;
-        for(Passenger p : passengers){
-            if(p.getSeatingClass().equals("E")){
-                count++;
-            }
-        }
-        return ecoCapacity == count;
+        return ecoCapacity == 0;
     }
 
     public boolean isFullBus() {
-        int count = 0;
-        for(Passenger p : passengers){
-            if(p.getSeatingClass().equals("B")){
-                count++;
-            }
-        }
-        return busCapacity == count;
+        return busCapacity == 0;
     }
 
     public void addPassenger(Passenger p) {
@@ -75,6 +65,14 @@ public class Flight {
         this.busCapacity = busCapacity;
     }
 
+    public void setEcoPrice(int ecoPrice) {
+        this.ecoPrice = ecoPrice;
+    }
+
+    public void setBusPrice(int busPrice) {
+        this.busPrice = busPrice;
+    }
+
     public void setAirline(String airline) {
         this.airline = airline;
     }
@@ -109,6 +107,14 @@ public class Flight {
 
     public int getBusCapacity() {
         return busCapacity;
+    }
+
+    public int getEcoPrice() {
+        return ecoPrice;
+    }
+
+    public int getBusPrice() {
+        return busPrice;
     }
 
     public String getAirline() {
