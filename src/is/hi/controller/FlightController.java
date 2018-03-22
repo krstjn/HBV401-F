@@ -7,9 +7,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Label;
 
-import javax.print.DocFlavor;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class FlightController {
@@ -33,6 +34,8 @@ public class FlightController {
     private JFXDatePicker returnFlight;
     @FXML
     private JFXButton btnSearch;
+    @FXML
+    private Label maxPriceLabel;
 
     private Query query;
     private DBManager db;
@@ -55,6 +58,7 @@ public class FlightController {
     private void searchFlights(ActionEvent e){
         Query q = new Query();
         System.out.println(cbOrigin.getValue());
+        System.out.println(departureFlight.getValue().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
         if(cbAirline.getValue() != null) q.setAirline(String.valueOf(cbAirline.getValue()));
         if(cbDestination.getValue() != null) q.setDestination(String.valueOf(cbDestination.getValue()));
         if(cbOrigin.getValue() != null) q.setOrigin(String.valueOf(cbOrigin.getValue()));
@@ -65,7 +69,7 @@ public class FlightController {
     @FXML
     @SuppressWarnings("unchecked")
     public void initialize() {
-        ArrayList<String> a = null;
+        ArrayList<String> a;
 
         db = new DBManager();
         try{
@@ -81,7 +85,14 @@ public class FlightController {
 
         ObservableList<String> timings = FXCollections.observableArrayList("Morgunflug", "Dagsflug", "Kvöldflug", "Næturflug");
         cbTiming.getItems().addAll(timings);
+
         ObservableList<String> classes = FXCollections.observableArrayList("Economy", "Business");
         cbClass.getItems().addAll(classes);
+
+        maxPrice.setValue(maxPrice.getMax());
+        maxPriceLabel.setText((int)maxPrice.getValue() + " þús");
+        maxPrice.valueProperty().addListener((ov, old_val, new_val) ->
+                maxPriceLabel.setText((int)Math.ceil(new_val.doubleValue()) + " þús"));
+
     }
 }
