@@ -29,13 +29,11 @@ public class DBManager {
     public ArrayList<String> runQuery(String query) throws SQLException{
         PreparedStatement p = conn.prepareStatement(query);
         ResultSet r = p.executeQuery();
-        String x = "";
         ArrayList<String> a = new ArrayList<String>();
         while (r.next()) {
-            a.add(r.getString(3));
+            a.add(r.getString(1));
         }
         r.close();
-        conn.close();
         System.out.println();
         return a;
     }

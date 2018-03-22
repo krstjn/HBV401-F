@@ -35,6 +35,7 @@ CREATE TABLE queries
   , destination VARCHAR(64)
   , departureTime VARCHAR(64)
   , departureDate DATE
+  , duration INTEGER
   , returnDate DATE
   , availableSeats INTEGER CHECK(availableSeats > 0)
   , seatingClass VARCHAR(64)

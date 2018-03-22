@@ -39,7 +39,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXCheckBox>
-            <JFXButton fx:id="btnSearch" buttonType="RAISED" layoutX="657.0" layoutY="42.0" onAction="#buttonPressed" prefHeight="52.0" prefWidth="52.0" ripplerFill="#ddeeaa" style="-fx-background-color: #6EDBA1;" text="Leita">
+            <JFXButton fx:id="btnSearch" buttonType="RAISED" layoutX="657.0" layoutY="42.0" onAction="#searchFlights" prefHeight="52.0" prefWidth="52.0" ripplerFill="#ddeeaa" style="-fx-background-color: #6EDBA1;" text="Leita">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
