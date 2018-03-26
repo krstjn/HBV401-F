@@ -57,14 +57,12 @@ public class FlightController {
     @FXML
     private void searchFlights(ActionEvent e){
         Query q = new Query();
-        System.out.println(cbOrigin.getValue());
-        System.out.println(departureFlight.getValue().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
         if(cbAirline.getValue() != null) q.setAirline(String.valueOf(cbAirline.getValue()));
         if(cbDestination.getValue() != null) q.setDestination(String.valueOf(cbDestination.getValue()));
         if(cbOrigin.getValue() != null) q.setOrigin(String.valueOf(cbOrigin.getValue()));
         if(cbClass.getValue() != null) q.setSeatingClass(String.valueOf(cbClass.getValue()));
         q.setMaxPrice((int)maxPrice.getValue() * 1000);
-        System.out.println(q);
+        q.toString();
     }
     @FXML
     @SuppressWarnings("unchecked")
@@ -72,6 +70,8 @@ public class FlightController {
         ArrayList<String> a;
 
         db = new DBManager();
+        int max = 100;
+        int min = 0;
         try{
             a = db.runQuery("Select origin from flights GROUP BY origin ORDER BY origin");
             cbOrigin.getItems().addAll(a);
@@ -90,6 +90,7 @@ public class FlightController {
         cbClass.getItems().addAll(classes);
 
         maxPrice.setValue(maxPrice.getMax());
+
         maxPriceLabel.setText((int)maxPrice.getValue() + " þús");
         maxPrice.valueProperty().addListener((ov, old_val, new_val) ->
                 maxPriceLabel.setText((int)Math.ceil(new_val.doubleValue()) + " þús"));
