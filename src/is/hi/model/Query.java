@@ -6,6 +6,7 @@ public class Query {
     private String origin = null;
     private String destination = null;
     private String departureTime = null;
+    private String arrivalTime = null;
     private Date departureDate = null;
     private Date returnDate = null;
     private String airline = null;
@@ -56,9 +57,6 @@ public class Query {
     /**
      * Setters fyrir tilviksbreytur
      */
-    public void setReturnDate(Date arrivalDate) {
-        this.returnDate = arrivalDate;
-    }
 
     public void setOrigin(String origin) {
         this.origin = origin;
@@ -72,6 +70,8 @@ public class Query {
         this.departureTime = departureTime;
     }
 
+    public void setArrivalTime(String arrivalTime) { this.arrivalTime = arrivalTime;}
+
     public void setAirline(String airline) {
         this.airline = airline;
     }
@@ -83,16 +83,18 @@ public class Query {
     public void setDepartureDate(Date departureDate) {
         this.departureDate = departureDate;
     }
+
+    public void setReturnDate(Date arrivalDate) {
+        this.returnDate = arrivalDate;
+    }
+
     public void setMaxPrice(int maxPrice) {
         this.maxPrice = maxPrice;
     }
+
     /**
      * Getters sem notaðir eru til að búa til leitarstreng.
      */
-    private String getReturnDateString() {
-        if(returnDate == null) return null;
-        return "arrival = " + returnDate;
-    }
     private String getOriginString() {
         if(origin == null) return null;
         return "origin = " + origin;
@@ -104,6 +106,10 @@ public class Query {
     private String getDepartureTimeString() {
         if(departureTime == null) return "";
         return "departureTime = " + departureTime;
+    }
+    private String getArrivalTimeTimeString() {
+        if(departureTime == null) return "";
+        return "arrivalTime = " + arrivalTime;
     }
     private String getAirlineString() {
         if(airline == null) return null;
@@ -120,6 +126,10 @@ public class Query {
     private String getMaxPriceString() {
         if(maxPrice < 0) return null;
         return "price <= " + maxPrice;
+    }
+    private String getReturnDateString() {
+        if(returnDate == null) return null;
+        return "departureDate= " + returnDate;
     }
 
     /**
