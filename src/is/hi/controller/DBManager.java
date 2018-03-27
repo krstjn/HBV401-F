@@ -14,10 +14,11 @@ public class DBManager {
 
     private Connection conn;
 
-    private ArrayList<Flight> flights;
-    private ArrayList<Query> searches;
+    private ArrayList<Flight> flights = new ArrayList<>();
+    private ArrayList<Query> searches = new ArrayList<>();
 
     public DBManager(){
+
         try{
             System.out.println("Trying sqlite...");
             Class.forName("org.sqlite.JDBC"); // fyrir SQLite
@@ -37,9 +38,10 @@ public class DBManager {
         System.out.println();
         return a;
     }
-
-    public void searchFlights(String query) throws SQLException {
-        PreparedStatement p = conn.prepareStatement(query);
+    // TODO
+    public ArrayList<Flight> searchFlights(Query query) throws SQLException {
+        flights.clear();
+        PreparedStatement p = conn.prepareStatement(query.toString());
         ResultSet r = p.executeQuery();
 
         Flight flight = new Flight();
@@ -47,8 +49,8 @@ public class DBManager {
             flight.setFlightID(r.getString("flightID"));
             flight.setFrom(r.getString("origin"));
             flight.setTo(r.getString("destination"));
-            flight.setDepartureTime(r.getString("departure"));
-            flight.setArrivalTime(r.getString("arrival"));
+            flight.setDepartureTime(r.getString("departureDate"));
+            flight.setArrivalTime(r.getString("returnDate"));
             flight.setEcoCapacity(r.getInt("ecoCapacity"));
             flight.setBusCapacity(r.getInt("busCapacity"));
             flight.setEcoPrice(r.getInt("ecoPrice"));
@@ -57,13 +59,30 @@ public class DBManager {
 
             flights.add(flight);
         }
+        System.out.println("Fjöldi úr leit " + flights.size());
+        String q ="INSERT INTO queries(origin,destination, departureTime, " +
+                "departureDate, duration, returnDate, availableSeats, seatingClass, maxPrice) " +
+                "VALUES(?,?,?,?,?,?,?,?,?)";
+        p = conn.prepareStatement(q);
+        p.setString(1, query.getOrigin());
+        p.setString(2,query.getDestination());
+        p.setInt(3,query.getDepartureTime());
+        p.setInt(4,query.getDepartureDate());
+        p.setString(5, null);
+        p.setInt(6,query.getReturnDate());
+        p.setInt(7, 10);
+        p.setString(8,query.getSeatingClass());
+        p.setInt(9,query.getMaxPrice());
+        p.executeUpdate();
         r.close();
-        conn.close();
-        System.out.println();
+        return flights;
     }
 
-    public ArrayList<Flight> getFlights() {
-        return flights;
+    public ArrayList<Flight> getFlights() { return flights; }
+
+    // TODO
+    public ArrayList<Query> getSearches() {
+        return searches;
     }
 
 
