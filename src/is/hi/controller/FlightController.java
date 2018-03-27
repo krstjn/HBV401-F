@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class FlightController {
@@ -36,6 +35,11 @@ public class FlightController {
     private JFXButton btnSearch;
     @FXML
     private Label maxPriceLabel;
+    @FXML
+    private JFXTreeTableView<?> originFlights;
+    @FXML
+    private JFXTreeTableView<?> destinationFlights;
+
 
     private Query query;
     private DBManager db;
@@ -61,8 +65,44 @@ public class FlightController {
         if(cbDestination.getValue() != null) q.setDestination(String.valueOf(cbDestination.getValue()));
         if(cbOrigin.getValue() != null) q.setOrigin(String.valueOf(cbOrigin.getValue()));
         if(cbClass.getValue() != null) q.setSeatingClass(String.valueOf(cbClass.getValue()));
+        if(cbTiming.getValue() != null){
+            String timing = String.valueOf(cbTiming.getValue());
+            switch(timing){
+                case "Næturflug":
+                    q.setDepartureTime(600);
+                    break;
+                case "Morgunflug":
+                    q.setDepartureTime(1200);
+                    break;
+                case "Dagsflug":
+                    q.setDepartureTime(1800);
+                    break;
+                case "Kvöldflug":
+                    q.setDepartureTime(2400);
+            }
+        }
+        if(departureFlight.getValue() != null){
+            int year = departureFlight.getValue().getYear();
+            int month = departureFlight.getValue().getMonthValue();
+            int day = departureFlight.getValue().getDayOfMonth();
+
+            String m = "";
+            String d = "";
+            if(month < 10) m += "0";
+            if(day < 10) d += "0";
+            q.setDepartureDate(Integer.valueOf(year +m+month+d+day));
+        }
         q.setMaxPrice((int)maxPrice.getValue() * 1000);
-        q.toString();
+        ArrayList<Flight> flights = new ArrayList<>();
+        try {
+            flights = db.searchFlights(q);
+        } catch (SQLException error){
+            System.out.println("Villa við að sækja flug " + error);
+        }
+        populatedTable(flights);
+    }
+    private void populatedTable(ArrayList<Flight> flights){
+
     }
     @FXML
     @SuppressWarnings("unchecked")
@@ -79,8 +119,8 @@ public class FlightController {
             cbDestination.getItems().addAll(a);
             a = db.runQuery("Select airline from flights GROUP BY airline");
             cbAirline.getItems().addAll(a);
-        } catch (SQLException e){
-            System.out.println(e);
+        } catch (SQLException error){
+            System.out.println(error);
         }
 
         ObservableList<String> timings = FXCollections.observableArrayList("Morgunflug", "Dagsflug", "Kvöldflug", "Næturflug");
