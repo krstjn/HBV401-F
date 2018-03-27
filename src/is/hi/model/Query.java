@@ -5,14 +5,13 @@ import java.util.Date;
 public class Query {
     private String origin = null;
     private String destination = null;
-    private String departureTime = null;
-    private String arrivalTime = null;
-    private Date departureDate = null;
-    private Date returnDate = null;
+    private int departureTime = -1;
+    private int arrivalTime = -1;
+    private int departureDate = -1;
+    private int returnDate = -1;
     private String airline = null;
     private String seatingClass = null;
     private int maxPrice = -1;
-
     /**
      * Smiður fyrir Query, ekki gert ráð fyrir neinni viðfangbreytu
      * búist við því að notaðir séu setters.
@@ -30,15 +29,19 @@ public class Query {
         return destination;
     }
 
-    public String getDepartureTime() {
+    public int getDepartureTime() {
         return departureTime;
     }
 
-    public Date getDepartureDate() {
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public int getDepartureDate() {
         return departureDate;
     }
 
-    public Date getReturnDate() {
+    public int getReturnDate() {
         return returnDate;
     }
 
@@ -66,11 +69,11 @@ public class Query {
         this.destination = destination;
     }
 
-    public void setDepartureTime(String departureTime) {
+    public void setDepartureTime(int departureTime) {
         this.departureTime = departureTime;
     }
 
-    public void setArrivalTime(String arrivalTime) { this.arrivalTime = arrivalTime;}
+    public void setArrivalTime(int arrivalTime) { this.arrivalTime = arrivalTime;}
 
     public void setAirline(String airline) {
         this.airline = airline;
@@ -80,11 +83,11 @@ public class Query {
         this.seatingClass = seatingClass;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(int departureDate) {
         this.departureDate = departureDate;
     }
 
-    public void setReturnDate(Date arrivalDate) {
+    public void setReturnDate(int arrivalDate) {
         this.returnDate = arrivalDate;
     }
 
@@ -97,39 +100,39 @@ public class Query {
      */
     private String getOriginString() {
         if(origin == null) return null;
-        return "origin = " + origin;
+        return "origin = '" + origin + "'";
     }
     private String getDestinationString() {
         if(destination == null) return null;
-        return "destination = " + destination;
+        return "destination = '" + destination + "'";
     }
     private String getDepartureTimeString() {
-        if(departureTime == null) return "";
-        return "departureTime = " + departureTime;
+        if(departureTime < 0) return null;
+        return "departureTime < " + departureTime + " AND departureTime >= " + (departureTime-600);
     }
     private String getArrivalTimeTimeString() {
-        if(departureTime == null) return "";
+        if(departureTime < 0) return null;
         return "arrivalTime = " + arrivalTime;
     }
     private String getAirlineString() {
         if(airline == null) return null;
-        return "airline = " + airline;
+        return "airline = '" + airline + "'";
     }
     private String getSeatingClassString() {
         if(seatingClass == null) return null;
-        return "seatingClass = " + seatingClass;
+        return "seatingClass = '" + seatingClass + "'";
     }
     private String getDepartureDateString() {
-        if(departureDate == null) return null;
+        if(departureDate < 0) return null;
         return "departureDate = " + departureDate;
     }
     private String getMaxPriceString() {
         if(maxPrice < 0) return null;
-        return "price <= " + maxPrice;
+        return "busPrice <= " + maxPrice + " AND ecoPrice <= " + maxPrice;
     }
     private String getReturnDateString() {
-        if(returnDate == null) return null;
-        return "departureDate= " + returnDate;
+        if(returnDate < 0) return null;
+        return "returnDate= " + returnDate;
     }
 
     /**
@@ -137,6 +140,10 @@ public class Query {
      * @return String
      */
     public String getQueries(){
+        String q = "INSERT INTO queries(id, origin,destination, departureTime, " +
+                "departureDate, duration, returnDate, availableSeats, seatingClass, maxPrice) " +
+                "VALUES(";
+        if(getOrigin() != null) q += getOrigin()+",";
         return "";
     }
 
@@ -144,9 +151,9 @@ public class Query {
         String[] queries = {
                 getOriginString(),
                 getDestinationString(),
-                //getDepartureTimeString(),
-                //getDepartureDateString(),
-                //getReturnDateString(),
+                getDepartureTimeString(),
+                getDepartureDateString(),
+                getReturnDateString(),
                 getAirlineString(),
                 getSeatingClassString(),
                 getMaxPriceString()
