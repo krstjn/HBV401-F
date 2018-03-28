@@ -4,51 +4,45 @@ import com.jfoenix.controls.*;
 import is.hi.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FlightController {
-    @FXML
-    private JFXComboBox cbOrigin;
-    @FXML
-    private JFXComboBox cbDestination;
-    @FXML
-    private JFXComboBox cbAirline;
-    @FXML
-    private JFXComboBox cbClass;
-    @FXML
-    private JFXComboBox cbTiming;
-    @FXML
-    private JFXSlider maxPrice;
-    @FXML
-    private JFXCheckBox oneWay;
-    @FXML
-    private JFXDatePicker departureFlight;
-    @FXML
-    private JFXDatePicker returnFlight;
-    @FXML
-    private JFXButton btnSearch;
-    @FXML
-    private Label maxPriceLabel;
-    @FXML
-    private JFXTreeTableView<?> originFlights;
-    @FXML
-    private JFXTreeTableView<?> destinationFlights;
-
+    @FXML private JFXComboBox cbOrigin;
+    @FXML private JFXComboBox cbDestination;
+    @FXML private JFXComboBox cbAirline;
+    @FXML private JFXComboBox cbClass;
+    @FXML private JFXComboBox cbTiming;
+    @FXML private JFXSlider maxPrice;
+    @FXML private JFXCheckBox oneWay;
+    @FXML private JFXDatePicker departureFlight;
+    @FXML private JFXDatePicker returnFlight;
+    @FXML private JFXButton btnSearch;
+    @FXML private Label maxPriceLabel;
+    @FXML private TableView<Flight> table;
+    @FXML private StackPane dialogWindow;
+    //@FXML private TableColumn<Flight, String> originCol;
+    //@FXML private TableColumn<Flight, String> destinationCol;
+    //@FXML private TableColumn<Flight, String> departureCol;
+    //FXML private TableColumn<Flight, String> departureTimeCol;
+    //@FXML private TableColumn<Flight, String> priceCol;
+    //@FXML private TableColumn<Flight, String> availableSeatsCol;
 
     private Query query;
     private DBManager db;
-
-
-    @FXML
-    private void buttonPressed(ActionEvent e){
-        System.out.println("takki");
-    }
 
     @FXML
     private void oneWayFlight(ActionEvent e){
@@ -99,11 +93,32 @@ public class FlightController {
         } catch (SQLException error){
             System.out.println("Villa við að sækja flug " + error);
         }
-        populatedTable(flights);
+        populateTable(flights);
     }
-    private void populatedTable(ArrayList<Flight> flights){
+
+    private void populateTable(ArrayList<Flight> flights){
+        ObservableList<Flight> items =  FXCollections.observableArrayList(flights);
+        table.setItems(items);
+    }
+
+    @FXML
+    private void flightSelected(MouseEvent e){
+        System.out.println("Table clicked");
+        Flight f = table.getSelectionModel().getSelectedItem();
+        System.out.println(f.getFrom() + " " + f.getTo());
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text(f.getFrom() + " - " + f.getTo()));
+        JFXButton click = new JFXButton("OK");
+        content.setActions(click);
+        JFXDialog flightInfo = new JFXDialog(dialogWindow, content,JFXDialog.DialogTransition.TOP);
+        click.setOnAction(event -> {
+            flightInfo.close();
+        });
+
+        flightInfo.show();
 
     }
+
     @FXML
     @SuppressWarnings("unchecked")
     public void initialize() {
@@ -134,6 +149,20 @@ public class FlightController {
         maxPriceLabel.setText((int)maxPrice.getValue() + " þús");
         maxPrice.valueProperty().addListener((ov, old_val, new_val) ->
                 maxPriceLabel.setText((int)Math.ceil(new_val.doubleValue()) + " þús"));
+        TableColumn originCol = new TableColumn("Origin");
+        originCol.setCellValueFactory(
+                new PropertyValueFactory<Flight, String>("from"));
+        TableColumn destinationCol = new TableColumn("Destination");
+        destinationCol.setCellValueFactory(
+                new PropertyValueFactory<Flight, String>("to"));
+        TableColumn priceCol = new TableColumn("ecoPrice");
+        priceCol.setCellValueFactory(
+                new PropertyValueFactory<Flight, Integer>("price" +
+                        ""));
+        TableColumn airlineCol = new TableColumn("Airline");
+        airlineCol.setCellValueFactory(
+                new PropertyValueFactory<Flight, String>("airline"));
+        table.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol);
 
     }
 }
