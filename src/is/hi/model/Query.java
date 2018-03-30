@@ -120,7 +120,8 @@ public class Query {
     }
     private String getSeatingClassString() {
         if(seatingClass == null) return null;
-        return "seatingClass = '" + seatingClass + "'";
+        if(seatingClass.equals("Economy")) return "ecoCapacity <> 0";
+        else return "busCapacity <> 0" ;
     }
     private String getDepartureDateString() {
         if(departureDate < 0) return null;

@@ -44,8 +44,8 @@ public class DBManager {
         PreparedStatement p = conn.prepareStatement(query.toString());
         ResultSet r = p.executeQuery();
 
-        Flight flight = new Flight();
         while (r.next()) {
+            Flight flight = new Flight();
             flight.setFlightID(r.getString("flightID"));
             flight.setFrom(r.getString("origin"));
             flight.setTo(r.getString("destination"));
@@ -56,7 +56,6 @@ public class DBManager {
             flight.setEcoPrice(r.getInt("ecoPrice"));
             flight.setBusPrice(r.getInt("busPrice"));
             flight.setAirline(r.getString("airline"));
-
             flights.add(flight);
         }
         System.out.println("Fjöldi úr leit " + flights.size());
