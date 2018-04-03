@@ -59,6 +59,7 @@ public class DBManager {
             flights.add(flight);
         }
         System.out.println("Fjöldi úr leit " + flights.size());
+        /*
         String q ="INSERT INTO queries(origin,destination, departureTime, " +
                 "departureDate, duration, returnDate, availableSeats, seatingClass, maxPrice) " +
                 "VALUES(?,?,?,?,?,?,?,?,?)";
@@ -73,16 +74,11 @@ public class DBManager {
         p.setString(8,query.getSeatingClass());
         p.setInt(9,query.getMaxPrice());
         p.executeUpdate();
+        */
         r.close();
         return flights;
     }
 
     public ArrayList<Flight> getFlights() { return flights; }
-
-    // TODO
-    public ArrayList<Query> getSearches() {
-        return searches;
-    }
-
 
 }

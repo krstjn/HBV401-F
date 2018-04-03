@@ -62,7 +62,8 @@
             <Label layoutX="216.0" layoutY="86.0" text="Hámarksverð:" />
             <JFXComboBox fx:id="cbAirline" layoutX="510.0" layoutY="14.0" prefHeight="25.0" prefWidth="92.0" promptText="Flugfélag.." />
             <Label fx:id="maxPriceLabel" layoutX="510.0" layoutY="86.0" prefHeight="17.0" prefWidth="52.0" />
-            <TableView fx:id="table" layoutX="31.0" layoutY="135.0" onMouseClicked="#flightSelected" prefHeight="181.0" prefWidth="729.0" />
+            <TableView fx:id="originTable" layoutX="31.0" layoutY="135.0" onMouseClicked="#flightSelected" prefHeight="181.0" prefWidth="729.0" />
+            <TableView fx:id="destinationTable" layoutX="31.0" layoutY="349.0" onMouseClicked="#flightSelected" prefHeight="181.0" prefWidth="729.0" />
          </children>
     </AnchorPane>
   </children>

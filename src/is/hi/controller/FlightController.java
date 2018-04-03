@@ -4,11 +4,9 @@ import com.jfoenix.controls.*;
 import is.hi.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -32,8 +30,8 @@ public class FlightController {
     @FXML private JFXDatePicker returnFlight;
     @FXML private JFXButton btnSearch;
     @FXML private Label maxPriceLabel;
-    @FXML private TableView<Flight> table;
-    @FXML private StackPane dialogWindow;
+    @FXML private TableView<Flight> originTable;
+    @FXML private TableView<Flight> destinationTable;
     //@FXML private TableColumn<Flight, String> originCol;
     //@FXML private TableColumn<Flight, String> destinationCol;
     //@FXML private TableColumn<Flight, String> departureCol;
@@ -93,18 +91,20 @@ public class FlightController {
         } catch (SQLException error){
             System.out.println("Villa við að sækja flug " + error);
         }
-        populateTable(flights);
+        populateTable(flights, originTable);
+        populateTable(flights, destinationTable);
     }
 
-    private void populateTable(ArrayList<Flight> flights){
+    private void populateTable(ArrayList<Flight> flights, TableView<Flight> table){
         ObservableList<Flight> items =  FXCollections.observableArrayList(flights);
         table.setItems(items);
     }
 
     @FXML
     private void flightSelected(MouseEvent e){
+        /**
         System.out.println("Table clicked");
-        Flight f = table.getSelectionModel().getSelectedItem();
+        Flight f = originTable.getSelectionModel().getSelectedItem();
         System.out.println(f.getFrom() + " " + f.getTo());
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text(f.getFrom() + " - " + f.getTo()));
@@ -116,7 +116,7 @@ public class FlightController {
         });
 
         flightInfo.show();
-
+*/
     }
 
     @FXML
@@ -162,7 +162,9 @@ public class FlightController {
         TableColumn airlineCol = new TableColumn("Airline");
         airlineCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("airline"));
-        table.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol);
+        originTable.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol);
+        destinationTable.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol);
+
 
     }
 }
