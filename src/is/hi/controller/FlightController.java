@@ -12,11 +12,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FlightController {
     @FXML private JFXComboBox cbOrigin;
@@ -31,7 +30,8 @@ public class FlightController {
     @FXML private JFXButton btnSearch;
     @FXML private Label maxPriceLabel;
     @FXML private TableView<Flight> originTable;
-    @FXML private TableView<Flight> destinationTable;
+    @FXML private TableView<Flight> returnTable;
+
     //@FXML private TableColumn<Flight, String> originCol;
     //@FXML private TableColumn<Flight, String> destinationCol;
     //@FXML private TableColumn<Flight, String> departureCol;
@@ -85,14 +85,24 @@ public class FlightController {
             q.setDepartureDate(Integer.valueOf(year +m+month+d+day));
         }
         q.setMaxPrice((int)maxPrice.getValue() * 1000);
-        ArrayList<Flight> flights = new ArrayList<>();
+        ArrayList<Flight> flightsOut;
+        ArrayList<Flight> flightsBack;
+
         try {
-            flights = db.searchFlights(q);
+            flightsOut = db.searchFlights(q);
         } catch (SQLException error){
             System.out.println("Villa við að sækja flug " + error);
+            flightsOut = new ArrayList<>();
+            flightsBack = new ArrayList<>();
         }
-        populateTable(flights, originTable);
-        populateTable(flights, destinationTable);
+        System.out.println(flightsOut.get(0).getEcoPrice());
+        populateTable(flightsOut, originTable);
+        /*
+        if(!oneWay.isSelected())
+            populateTable(flightsBack, returnTable);
+        else
+            populateTable(flightsBack, returnTable);
+            */
     }
 
     private void populateTable(ArrayList<Flight> flights, TableView<Flight> table){
@@ -125,8 +135,6 @@ public class FlightController {
         ArrayList<String> a;
 
         db = new DBManager();
-        int max = 100;
-        int min = 0;
         try{
             a = db.runQuery("Select origin from flights GROUP BY origin ORDER BY origin");
             cbOrigin.getItems().addAll(a);
@@ -136,6 +144,7 @@ public class FlightController {
             cbAirline.getItems().addAll(a);
         } catch (SQLException error){
             System.out.println(error);
+            a = new ArrayList<>();
         }
 
         ObservableList<String> timings = FXCollections.observableArrayList("Morgunflug", "Dagsflug", "Kvöldflug", "Næturflug");
@@ -155,16 +164,18 @@ public class FlightController {
         TableColumn destinationCol = new TableColumn("Destination");
         destinationCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("to"));
-        TableColumn priceCol = new TableColumn("ecoPrice");
+        TableColumn priceCol = new TableColumn("Price");
         priceCol.setCellValueFactory(
-                new PropertyValueFactory<Flight, Integer>("price" +
-                        ""));
+                new PropertyValueFactory<Flight, Integer>("ecoPrice"));
         TableColumn airlineCol = new TableColumn("Airline");
         airlineCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("airline"));
-        originTable.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol);
-        destinationTable.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol);
-
-
+        TableColumn departureCol = new TableColumn("Departure");
+        departureCol.setCellValueFactory(
+                new PropertyValueFactory<Flight, Date>("departureTime"));
+        TableColumn capacityCol = new TableColumn("Capacity");
+        capacityCol.setCellValueFactory(
+                new PropertyValueFactory<Flight, Integer>("ecoCapacity"));
+        originTable.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol,departureCol, capacityCol);
     }
 }

@@ -1,6 +1,10 @@
 package is.hi.model;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Flight {
 
@@ -94,7 +98,10 @@ public class Flight {
     }
 
     public String getDepartureTime() {
-        return departureTime;
+        String date = departureTime.substring(0,4) + '-' + departureTime.substring(4,6) + '-'+departureTime.substring(6,8);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
+        LocalDate localDate = LocalDate.parse(date);
+        return localDate.format(formatter);
     }
 
     public String getArrivalTime() {
