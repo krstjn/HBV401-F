@@ -41,7 +41,7 @@ public class DBManager {
     // TODO
     public ArrayList<Flight> searchFlights(Query query) throws SQLException {
         flights.clear();
-        PreparedStatement p = conn.prepareStatement(query.toString());
+        PreparedStatement p = conn.prepareStatement(query.toString() + " order by EcoPrice");
         ResultSet r = p.executeQuery();
 
         while (r.next()) {
@@ -59,7 +59,7 @@ public class DBManager {
             flights.add(flight);
         }
         System.out.println("Fjöldi úr leit " + flights.size());
-        /*
+
         String q ="INSERT INTO queries(origin,destination, departureTime, " +
                 "departureDate, duration, returnDate, availableSeats, seatingClass, maxPrice) " +
                 "VALUES(?,?,?,?,?,?,?,?,?)";
@@ -74,11 +74,35 @@ public class DBManager {
         p.setString(8,query.getSeatingClass());
         p.setInt(9,query.getMaxPrice());
         p.executeUpdate();
-        */
         r.close();
+
         return flights;
     }
 
     public ArrayList<Flight> getFlights() { return flights; }
+
+
+    /*
+    ADMIN FÖll
+     */
+
+    public int getNrOffSearches(String startDate, String endDate) throws SQLException {
+        String query = "SELECT count(*) FROM queries WHERE searchDate > " + startDate + " AND searchDate < " + endDate;
+
+        PreparedStatement p = conn.prepareStatement(query);
+        ResultSet r = p.executeQuery();
+        return r.getInt(1);
+    }
+
+    public int getNrOffBookings(String startDate, String endDate) throws SQLException {
+        String query = "SELECT count(*) FROM queries WHERE bookingDate > " + startDate + " AND bookingDate < " + endDate;
+
+        PreparedStatement p = conn.prepareStatement(query);
+        ResultSet r = p.executeQuery();
+        return r.getInt(1);
+    }
+
+
+
 
 }
