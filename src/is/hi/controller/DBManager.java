@@ -92,10 +92,10 @@ public class DBManager {
 
         p.executeUpdate();
 
-        if(passenger.getSeatingClass() == "eco"){
-            u = "UPDATE flights SET ecoCapacity = ecoCapacity - 1 WHERE flightID == " + passenger.getFlightID();
+        if(passenger.getSeatingClass().equals("Economy")){
+            u = "UPDATE flights SET ecoCapacity = ecoCapacity - 1 WHERE flightID = '" + passenger.getFlightID() + "'";
         } else {
-            u = "UPDATE flights SET busCapacity = busCapacity - 1 WHERE flightID == " + passenger.getFlightID();
+            u = "UPDATE flights SET busCapacity = busCapacity - 1 WHERE flightID = '" + passenger.getFlightID() + "'";
         }
         p = conn.prepareStatement(u);
         p.executeUpdate();
@@ -106,10 +106,10 @@ public class DBManager {
      */
 
     public boolean checkAdmin(String username, String password) throws SQLException {
-        String q = "SELECT * FROM users WHERE username = " + username + " AND password = " + password;
+        String q = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
         PreparedStatement p = conn.prepareStatement(q);
         ResultSet r = p.executeQuery();
-        return r.getFetchSize() == 1;
+        return r.next();
     }
 
     public int getNrOffSearches(String startDate, String endDate) throws SQLException {

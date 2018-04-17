@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+import javax.print.DocFlavor;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -21,18 +23,26 @@ public class AdminView {
     private FlightController fc;
 
     @FXML
-    private void searchQueries(ActionEvent e){
+    private void searchQueries(ActionEvent e) throws SQLException{
         String dateOne = (new Date()).toString();
         if(startDate.getValue() != null)
             dateOne = startDate.getValue().toString();
         String dateTwo = (new Date()).toString();
         if(endDate.getValue() != null)
             dateTwo = endDate.getValue().toString();
+
+        int nrSearches = fc.getNrOffSearches("'"+dateOne+"'", "'"+dateTwo+"'");
+        int nrBookings = fc.getNrOffBookings("'"+dateOne+"'","'"+dateTwo+"'");
+        bookings.setText(String.valueOf(nrBookings));
+        searches.setText(String.valueOf(nrSearches));
         System.out.println("Leitartilraun: " + dateOne + " : " + dateTwo);
     }
 
+    public void setController(FlightController fc){
+        this.fc = fc;
+    }
     @FXML
     public void initialize(){
-        fc = new FlightController();
+
     }
 }

@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -22,6 +23,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
@@ -183,41 +185,53 @@ public class FlightView {
         content.setLayoutX(50);
         content.setLayoutY(50);
 
-
-        JFXTextField password = new JFXTextField("");
+        JFXPasswordField password = new JFXPasswordField();
         password.setPromptText("Lykilorð");
+        password.setStyle("-fx-alignment: center");
+        username.setStyle("-fx-alignment: center");
         close.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.RAISED);
+        close.setStyle("-fx-text-fill: red");
         login.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.RAISED);
+        login.setStyle("-fx-text-fill: green");
         Label error = new Label("");
         content.setActions(error,username, password, close, login);
         JFXDialog loginScreen = new JFXDialog(dialogWindow, content,JFXDialog.DialogTransition.TOP);
-
+        content.setPadding(new Insets(5));
         login.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 Parent root = null;
                 String user = username.getText();
                 String pass = password.getText();
                 System.out.println(user + ": " + pass);
-                if(user.equals("admin") && pass.equals("123")) {
-                    try {
-                        System.out.println(getClass().getResource("login.fxml"));
-                        root = FXMLLoader.load(getClass().getResource("login.fxml"));
-                        Scene scene = new Scene(root);
-                        Stage secStage = new Stage();
-                        secStage.setScene(scene);
-                        secStage.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+
+                try {
+                    if(fc.checkAdmin(user, pass)) {
+                        try {
+                            System.out.println(getClass().getResource("login.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+                            root = loader.load();
+                            AdminView controller = loader.getController();
+                            controller.setController(fc);
+                            Scene scene = new Scene(root);
+                            Stage secStage = new Stage();
+                            secStage.setScene(scene);
+                            secStage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        loginScreen.close();
+                    }else {
+                        error.setText("Innskráning tókst ekki");
+                        error.setTextFill(Color.web("#f00"));
                     }
-                    loginScreen.close();
-                }else {
-                    error.setText("Innskráning tókst ekki");
-                    error.setTextFill(Color.web("#f00"));
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
                 }
 
             }
 
         });
+
         close.setOnAction(event -> {
             dialogWindow.setMouseTransparent(true);
             dialogWindow.setPrefWidth(width/2);
@@ -229,6 +243,7 @@ public class FlightView {
 
     }
     @FXML
+    @SuppressWarnings("unchecked")
     private void flightSelected(MouseEvent e){
         double x = e.getX();
         double y = e.getY();
@@ -246,6 +261,8 @@ public class FlightView {
 
         JFXButton book = new JFXButton("Bóka");
         JFXButton close = new JFXButton("Loka");
+        book.setStyle("-fx-background-color: green");
+        close.setStyle("-fx-background-color: red");
         content.setActions(close, book);
         JFXDialog flightInfo = new JFXDialog(dialogWindow, content,JFXDialog.DialogTransition.TOP);
         book.setOnAction(new EventHandler<ActionEvent>() {
@@ -256,7 +273,7 @@ public class FlightView {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("booking.fxml"));
                     root = loader.load();
                     BookingView controller = loader.getController();
-                    controller.setFlight(f);
+                    controller.setFlight(f,fc);
                     Scene scene = new Scene(root);
                     Stage secStage = new Stage();
                     secStage.setTitle("Bóka flug frá " + f.getFrom() + " til " + f.getTo());
