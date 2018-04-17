@@ -128,9 +128,9 @@ public class DBManager {
         return r.getInt(1);
     }
 
-    public ArrayList<String> getMostSearched(String startDate, String endDate) throws SQLException {
-        String query = "SELECT origin, COUNT(origin) AS cnt FROM queries WHERE bookingDate >= " + startDate +
-                " AND bookingDate <= " + endDate +  "GROUP BY origin ORDER BY cnt DESC";
+    public ArrayList<String> getMostSearched(String startDate, String endDate, String from) throws SQLException {
+        String query = "SELECT " + from + " , COUNT(" + from + ") AS cnt FROM queries WHERE bookingDate >= " + startDate +
+                " AND bookingDate <= " + endDate +  "GROUP BY " + from + " ORDER BY cnt DESC";
         PreparedStatement p = conn.prepareStatement(query);
         ResultSet r = p.executeQuery();
 
