@@ -11,16 +11,19 @@ import javafx.fxml.FXML;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -158,11 +161,54 @@ public class FlightView {
     }
 
     @FXML
+    private void login(ActionEvent e){
+        dialogWindow.setLayoutX(50);
+        dialogWindow.setLayoutY(50);
+        double width = dialogWindow.getWidth();
+        double height = dialogWindow.getHeight();
+
+        dialogWindow.setPrefWidth(width/2);
+        dialogWindow.setPrefHeight(height/3);
+        dialogWindow.getChildren().clear();
+        System.out.println("login clicked");
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("Innskráning"));
+        JFXButton login = new JFXButton("Skrá inn");
+        JFXButton close = new JFXButton("Hætta við");
+        JFXTextField username = new JFXTextField("");
+        username.setPromptText("Notandanafn");
+        content.setLayoutX(50);
+        content.setLayoutY(50);
+
+
+        JFXTextField password = new JFXTextField("");
+        password.setPromptText("Lykilorð");
+        close.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.RAISED);
+        login.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.RAISED);
+        content.setActions(username, password, close, login);
+        JFXDialog flightInfo = new JFXDialog(dialogWindow, content,JFXDialog.DialogTransition.TOP);
+
+        login.setOnAction(event -> {
+            System.out.println("tilraun til að skrá inn");
+            System.out.println(username.getText());
+        });
+        close.setOnAction(event -> {
+            dialogWindow.setMouseTransparent(true);
+            dialogWindow.setPrefWidth(width/2);
+            dialogWindow.setPrefHeight(height/2);
+            flightInfo.close();
+        });
+
+        flightInfo.show();
+
+    }
+    @FXML
     private void flightSelected(MouseEvent e){
         double x = e.getX();
         double y = e.getY();
         dialogWindow.setLayoutX(x);
         dialogWindow.setLayoutY(y);
+        dialogWindow.setMouseTransparent(false);
 
         dialogWindow.getChildren().clear();
         System.out.println("Table clicked");
@@ -171,6 +217,7 @@ public class FlightView {
         System.out.println(f.getFrom() + " " + f.getTo());
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text(f.getFrom() + " - " + f.getTo()));
+
         JFXButton book = new JFXButton("Bóka");
         JFXButton close = new JFXButton("Loka");
         content.setActions(close, book);
@@ -179,24 +226,25 @@ public class FlightView {
             public void handle(ActionEvent event) {
                 Parent root = null;
                 try {
-                    System.out.println(getClass().getResource("../view/booking.fxml"));
-                    root = FXMLLoader.load(getClass().getResource("../view/booking.fxml"));
-
+                    System.out.println(getClass().getResource("booking.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("booking.fxml"));
+                    root = loader.load();
+                    BookingView controller = loader.getController();
+                    controller.setFlight(f);
+                    Scene scene = new Scene(root);
+                    Stage secStage = new Stage();
+                    secStage.setTitle("Bóka flug frá " + f.getFrom() + " til " + f.getTo());
+                    secStage.setScene(scene);
+                    secStage.show();
                     //((Node) (event.getSource())).getScene().getWindow().hide();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
-                if (root != null) {
-                    Scene scene = new Scene(root);
-                    Stage secStage = new Stage();
-                    secStage.setTitle("Bóka flug");
-                    secStage.setScene(scene);
-                    secStage.show();
                 }
             }
 
         });
         close.setOnAction(event -> {
+            dialogWindow.setMouseTransparent(true);
             flightInfo.close();
         });
 
@@ -233,10 +281,11 @@ public class FlightView {
         maxPriceLabel.setText((int)maxPrice.getValue() + " þús");
         maxPrice.valueProperty().addListener((ov, old_val, new_val) ->
                 maxPriceLabel.setText((int)Math.ceil(new_val.doubleValue()) + " þús"));
-        TableColumn originCol = new TableColumn("Origin");
+        TableColumn originCol = new TableColumn("Brottfarastaður");
         originCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("from"));
-        TableColumn destinationCol = new TableColumn("Destination");
+        originCol.setMinWidth(20);
+        TableColumn destinationCol = new TableColumn("Áfangastaður");
         destinationCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("to"));
         TableColumn priceCol = new TableColumn("Price");
@@ -245,31 +294,33 @@ public class FlightView {
         TableColumn airlineCol = new TableColumn("Airline");
         airlineCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("airline"));
-        TableColumn departureCol = new TableColumn("Departure");
+        TableColumn departureCol = new TableColumn("Brottfaratími");
         departureCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, Date>("departureTime"));
-        TableColumn capacityCol = new TableColumn("Capacity");
+        TableColumn capacityCol = new TableColumn("Laus sæti");
         capacityCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, Integer>("ecoCapacity"));
+        originTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         originTable.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol,departureCol, capacityCol);
-        TableColumn originCol1 = new TableColumn("Origin");
+        TableColumn originCol1 = new TableColumn("Brottfarastaður");
         originCol1.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("from"));
-        TableColumn destinationCol1 = new TableColumn("Destination");
+        TableColumn destinationCol1 = new TableColumn("Áfangastaður");
         destinationCol1.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("to"));
-        TableColumn priceCol1 = new TableColumn("Price");
+        TableColumn priceCol1 = new TableColumn("Verð");
         priceCol1.setCellValueFactory(
                 new PropertyValueFactory<Flight, Integer>("ecoPrice"));
-        TableColumn airlineCol1 = new TableColumn("Airline");
+        TableColumn airlineCol1 = new TableColumn("Flugfélag");
         airlineCol1.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("airline"));
-        TableColumn departureCol1 = new TableColumn("Departure");
+        TableColumn departureCol1 = new TableColumn("Brottfaratími");
         departureCol1.setCellValueFactory(
                 new PropertyValueFactory<Flight, Date>("departureTime"));
-        TableColumn capacityCol1 = new TableColumn("Capacity");
+        TableColumn capacityCol1 = new TableColumn("Laus sæti");
         capacityCol1.setCellValueFactory(
                 new PropertyValueFactory<Flight, Integer>("ecoCapacity"));
+        returnTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         returnTable.getColumns().addAll(originCol1, destinationCol1, priceCol1, airlineCol1,departureCol1, capacityCol1);
     }
 }

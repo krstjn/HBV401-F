@@ -20,15 +20,14 @@
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="Innskráning" />
-        <Menu mnemonicParsing="false" text="Hjálp">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Um forritið" />
-          </items>
-        </Menu>
+        <Menu mnemonicParsing="false" text="Innskráning">
+               <items>
+            <MenuItem mnemonicParsing="false" onAction="#login" text="Um forritið" />
+               </items></Menu>
+        <Menu mnemonicParsing="false" text="Hjálp" />
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="587.0" prefWidth="851.0" style="-fx-background-color: #eee;" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="561.0" prefWidth="782.0" style="-fx-background-color: #eee;" VBox.vgrow="ALWAYS">
          <children>
             <JFXDatePicker fx:id="departureFlight" defaultColor="#6edba1" editable="false" layoutX="31.0" layoutY="45.0" prefHeight="25.0" prefWidth="155.0" promptText="Flug út" />
             <JFXDatePicker fx:id="returnFlight" defaultColor="#6edba1" editable="false" layoutX="216.0" layoutY="45.0" prefHeight="25.0" prefWidth="155.0" promptText="Flug heim" />
@@ -65,7 +64,7 @@
             <Label fx:id="maxPriceLabel" layoutX="510.0" layoutY="86.0" prefHeight="17.0" prefWidth="52.0" />
             <TableView fx:id="originTable" layoutX="31.0" layoutY="135.0" onMouseClicked="#flightSelected" prefHeight="181.0" prefWidth="729.0" />
             <TableView fx:id="returnTable" layoutX="31.0" layoutY="349.0" onMouseClicked="#flightSelected" prefHeight="181.0" prefWidth="729.0" />
-            <StackPane fx:id="dialogWindow" layoutX="291.0" layoutY="48.0" prefHeight="150.0" prefWidth="200.0" />
+            <StackPane fx:id="dialogWindow" layoutX="-177.0" layoutY="151.0" prefHeight="107.0" prefWidth="200.0" />
          </children>
     </AnchorPane>
   </children>

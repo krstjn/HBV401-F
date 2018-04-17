@@ -61,18 +61,15 @@ public class DBManager {
         System.out.println("Fjöldi úr leit " + flights.size());
 
         String q ="INSERT INTO queries(origin,destination, departureTime, " +
-                "departureDate, duration, returnDate, availableSeats, seatingClass, maxPrice) " +
-                "VALUES(?,?,?,?,?,?,?,?,?)";
+                "departureDate, seatingClass, maxPrice) " +
+                "VALUES(?,?,?,?,?,?)";
         p = conn.prepareStatement(q);
         p.setString(1, query.getOrigin());
         p.setString(2,query.getDestination());
         p.setInt(3,query.getDepartureTime());
         p.setInt(4,query.getDepartureDate());
-        p.setString(5, null);
-        p.setInt(6,query.getReturnDate());
-        p.setInt(7, 10);
-        p.setString(8,query.getSeatingClass());
-        p.setInt(9,query.getMaxPrice());
+        p.setString(5,query.getSeatingClass());
+        p.setInt(6,query.getMaxPrice());
         p.executeUpdate();
         r.close();
 
