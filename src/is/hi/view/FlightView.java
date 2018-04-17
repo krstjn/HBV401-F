@@ -263,9 +263,13 @@ public class FlightView {
         JFXButton close = new JFXButton("Loka");
         book.setStyle("-fx-background-color: green");
         close.setStyle("-fx-background-color: red");
+        Label message = new Label();
         if(f.getAvailableSeats().size() < 10)
             content.setActions(new Label("Aðeins "+ (f.getEcoCapacity()+f.getBusCapacity())+" sæti eftir"),close, book);
         else
+            message.setText("");
+
+        content.setActions(message, close, book);
             content.setActions(close, book);
         JFXDialog flightInfo = new JFXDialog(dialogWindow, content,JFXDialog.DialogTransition.TOP);
         book.setOnAction(new EventHandler<ActionEvent>() {
