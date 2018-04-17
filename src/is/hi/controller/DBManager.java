@@ -120,7 +120,7 @@ public class DBManager {
         String q = "SELECT * FROM users WHERE username = " + username + " AND password = " + password;
         PreparedStatement p = conn.prepareStatement(q);
         ResultSet r = p.executeQuery();
-        return r.getFetchSize() == 1;
+        return r.next();
     }
 
     public int getNrOffSearches(String startDate, String endDate) throws SQLException {
