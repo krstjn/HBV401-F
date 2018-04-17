@@ -24,6 +24,7 @@ public class Flight {
     public Flight(){
 
         passengers = new ArrayList<Passenger>();
+
         availableSeats = new ArrayList<String>();
         for(char row = 'A'; row < 20 + 'A'; row++) {
             for(int nr = 1; nr <= 6; nr++) {
@@ -147,4 +148,8 @@ public class Flight {
         return airline;
     }
 
+    public ArrayList<String> getAvailableSeats() {
+        System.out.println(availableSeats.get(10));
+        return availableSeats;
+    }
 }

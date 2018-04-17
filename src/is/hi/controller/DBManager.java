@@ -59,11 +59,11 @@ public class DBManager {
             flight.setEcoPrice(r.getInt("ecoPrice"));
             flight.setBusPrice(r.getInt("busPrice"));
             flight.setAirline(r.getString("airline"));
-            PreparedStatement p1 = conn.prepareStatement("SELECT seat FROM passengers WHERE flightID = " + r.getString("flightID"));
-            ResultSet r1 = p.executeQuery();
+            PreparedStatement p1 = conn.prepareStatement("SELECT seat FROM passengers WHERE flightID = '" + r.getString("flightID") + "'");
+            ResultSet r1 = p1.executeQuery();
             ArrayList<String> seats = new ArrayList<>();
-            while(r.next()) {
-                seats.add(r1.getString("seat"));
+            while(r1.next()) {
+                seats.add(r1.getString(1));
             }
             flight.setSeats(seats);
 
@@ -117,7 +117,7 @@ public class DBManager {
      */
 
     public boolean checkAdmin(String username, String password) throws SQLException {
-        String q = "SELECT * FROM users WHERE username = " + username + " AND password = " + password;
+        String q = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
         PreparedStatement p = conn.prepareStatement(q);
         ResultSet r = p.executeQuery();
         return r.next();
@@ -140,8 +140,8 @@ public class DBManager {
     }
 
     public ArrayList<String> getMostSearched(String startDate, String endDate, String from) throws SQLException {
-        String query = "SELECT " + from + " , COUNT(" + from + ") AS cnt FROM queries WHERE bookingDate >= " + startDate +
-                " AND bookingDate <= " + endDate +  "GROUP BY " + from + " ORDER BY cnt DESC";
+        String query = "SELECT " + from + " , COUNT(" + from + ") AS cnt FROM queries WHERE searchDate >= " + startDate +
+                " AND searchDate <= " + endDate +  "GROUP BY " + from + " ORDER BY cnt DESC";
         PreparedStatement p = conn.prepareStatement(query);
         ResultSet r = p.executeQuery();
 

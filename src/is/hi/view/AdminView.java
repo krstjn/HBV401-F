@@ -31,10 +31,12 @@ public class AdminView {
         if(endDate.getValue() != null)
             dateTwo = endDate.getValue().toString();
 
+
         int nrSearches = fc.getNrOffSearches("'"+dateOne+"'", "'"+dateTwo+"'");
         int nrBookings = fc.getNrOffBookings("'"+dateOne+"'","'"+dateTwo+"'");
         bookings.setText(String.valueOf(nrBookings));
         searches.setText(String.valueOf(nrSearches));
+        originList.getItems().addAll(fc.getMostSearched("'"+dateOne+"'", "'"+dateTwo+"'", "origin"));
         System.out.println("Leitartilraun: " + dateOne + " : " + dateTwo);
     }
 
