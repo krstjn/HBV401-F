@@ -45,6 +45,8 @@ public class DBManager {
         PreparedStatement p = conn.prepareStatement(query.toString() + " order by EcoPrice");
         ResultSet r = p.executeQuery();
 
+
+
         while (r.next()) {
             Flight flight = new Flight();
             flight.setFlightID(r.getString("flightID"));
@@ -57,7 +59,16 @@ public class DBManager {
             flight.setEcoPrice(r.getInt("ecoPrice"));
             flight.setBusPrice(r.getInt("busPrice"));
             flight.setAirline(r.getString("airline"));
+            PreparedStatement p1 = conn.prepareStatement("SELECT seat FROM passengers WHERE flightID = " + r.getString("flightID"));
+            ResultSet r1 = p.executeQuery();
+            ArrayList<String> seats = new ArrayList<>();
+            while(r.next()) {
+                seats.add(r1.getString("seat"));
+            }
+            flight.setSeats(seats);
+
             flights.add(flight);
+
         }
         System.out.println("Fjöldi úr leit " + flights.size());
 
@@ -92,10 +103,10 @@ public class DBManager {
 
         p.executeUpdate();
 
-        if(passenger.getSeatingClass() == "eco"){
-            u = "UPDATE flights SET ecoCapacity = ecoCapacity - 1 WHERE flightID == " + passenger.getFlightID();
+        if(passenger.getSeatingClass() == "Economy"){
+            u = "UPDATE flights SET ecoCapacity = ecoCapacity - 1 WHERE flightID = '" + passenger.getFlightID() + "'";
         } else {
-            u = "UPDATE flights SET busCapacity = busCapacity - 1 WHERE flightID == " + passenger.getFlightID();
+            u = "UPDATE flights SET busCapacity = busCapacity - 1 WHERE flightID = '" + passenger.getFlightID() + "'";
         }
         p = conn.prepareStatement(u);
         p.executeUpdate();
