@@ -9,10 +9,11 @@ public class Passenger {
     private boolean luggage;
     private String  seatingclass;
     private String  seatNumber;
+    private String  birthDate;
+    private String  flightID;
 
     /********* Smiður *********/
     public Passenger() { }
-
 
     /********* Getters *********/
     public String getFirst(){
@@ -33,8 +34,13 @@ public class Passenger {
     public String getSeatNumber(){
         return seatNumber;
     }
+    public String getBirthDate(){
+        return birthDate;
+    }
 
-
+    public String getFlightID() {
+        return flightID;
+    }
 
     /********* Setters *********/
     public void setFirst(String fn){
@@ -56,6 +62,11 @@ public class Passenger {
         this.seatNumber = sn;
     }
 
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
 
-
+    public void setFlightID(String flightID) {
+        this.flightID = flightID;
+    }
 }
