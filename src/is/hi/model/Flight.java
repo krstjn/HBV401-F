@@ -30,7 +30,7 @@ public class Flight {
         for(char row = 'A'; row < 20 + 'A'; row++) {
             for(int nr = 1; nr <= 6; nr++) {
                 String s = "";
-                s = row + String.valueOf(nr);
+                s = String.valueOf(nr) + row;
                 availableSeats.add(s);
             }
         }

@@ -309,21 +309,20 @@ public class FlightView {
 
         fc = new FlightController();
         try{
-            a = fc.runQuery("Select origin from flights GROUP BY origin ORDER BY origin");
+            a = fc.runQuery("Select origin from flights WHERE ecoCapacity > 0 GROUP BY origin ORDER BY origin");
             cbOrigin.getItems().addAll(a);
-            a = fc.runQuery("Select destination from flights GROUP BY destination ORDER BY destination");
+            a = fc.runQuery("Select destination from flights WHERE ecoCapacity > 0 GROUP BY destination ORDER BY destination");
             cbDestination.getItems().addAll(a);
-            a = fc.runQuery("Select airline from flights GROUP BY airline");
+            a = fc.runQuery("Select airline from flights WHERE ecoCapacity > 0 GROUP BY airline");
             cbAirline.getItems().addAll(a);
         } catch (SQLException error){
             System.out.println(error);
-            a = new ArrayList<>();
         }
 
         ObservableList<String> timings = FXCollections.observableArrayList("Morgunflug", "Dagsflug", "Kvöldflug", "Næturflug");
         cbTiming.getItems().addAll(timings);
 
-        ObservableList<String> classes = FXCollections.observableArrayList("Economy", "Business");
+        ObservableList<String> classes = FXCollections.observableArrayList("Economy", "Buisness");
         cbClass.getItems().addAll(classes);
 
         maxPrice.setValue(maxPrice.getMax());
