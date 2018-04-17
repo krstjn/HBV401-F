@@ -129,7 +129,7 @@ public class Query {
     }
     private String getMaxPriceString() {
         if(maxPrice < 0) return null;
-        return "busPrice <= " + maxPrice + " AND ecoPrice <= " + maxPrice;
+        return "(busPrice <= " + maxPrice + " OR ecoPrice <= " + maxPrice + ")";
     }
     private String getReturnDateString() {
         if(returnDate < 0) return null;

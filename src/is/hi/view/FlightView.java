@@ -22,9 +22,11 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -166,6 +168,7 @@ public class FlightView {
         dialogWindow.setLayoutY(50);
         double width = dialogWindow.getWidth();
         double height = dialogWindow.getHeight();
+        dialogWindow.setMouseTransparent(false);
 
         dialogWindow.setPrefWidth(width/2);
         dialogWindow.setPrefHeight(height/3);
@@ -185,21 +188,44 @@ public class FlightView {
         password.setPromptText("Lykilorð");
         close.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.RAISED);
         login.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.RAISED);
-        content.setActions(username, password, close, login);
-        JFXDialog flightInfo = new JFXDialog(dialogWindow, content,JFXDialog.DialogTransition.TOP);
+        Label error = new Label("");
+        content.setActions(error,username, password, close, login);
+        JFXDialog loginScreen = new JFXDialog(dialogWindow, content,JFXDialog.DialogTransition.TOP);
 
-        login.setOnAction(event -> {
-            System.out.println("tilraun til að skrá inn");
-            System.out.println(username.getText());
+        login.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                Parent root = null;
+                String user = username.getText();
+                String pass = password.getText();
+                System.out.println(user + ": " + pass);
+                if(user.equals("admin") && pass.equals("123")) {
+                    try {
+                        System.out.println(getClass().getResource("login.fxml"));
+                        root = FXMLLoader.load(getClass().getResource("login.fxml"));
+                        Scene scene = new Scene(root);
+                        Stage secStage = new Stage();
+                        secStage.setScene(scene);
+                        secStage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    loginScreen.close();
+                }else {
+                    error.setText("Innskráning tókst ekki");
+                    error.setTextFill(Color.web("#f00"));
+                }
+
+            }
+
         });
         close.setOnAction(event -> {
             dialogWindow.setMouseTransparent(true);
             dialogWindow.setPrefWidth(width/2);
             dialogWindow.setPrefHeight(height/2);
-            flightInfo.close();
+            loginScreen.close();
         });
 
-        flightInfo.show();
+        loginScreen.show();
 
     }
     @FXML
