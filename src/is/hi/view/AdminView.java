@@ -24,12 +24,18 @@ public class AdminView {
 
     @FXML
     private void searchQueries(ActionEvent e) throws SQLException{
-        String dateOne = (new Date()).toString();
+        Date one = new Date();
+        one.setHours(0);
+        String dateOne = (one.toString());
         if(startDate.getValue() != null)
             dateOne = startDate.getValue().toString();
-        String dateTwo = (new Date()).toString();
+        Date two = new Date();
+        two.setHours(24);
+        String dateTwo = (two.toString());
         if(endDate.getValue() != null)
             dateTwo = endDate.getValue().toString();
+
+
 
 
         int nrSearches = fc.getNrOffSearches("'"+dateOne+"'", "'"+dateTwo+"'");
@@ -37,6 +43,7 @@ public class AdminView {
         bookings.setText(String.valueOf(nrBookings));
         searches.setText(String.valueOf(nrSearches));
         originList.getItems().addAll(fc.getMostSearched("'"+dateOne+"'", "'"+dateTwo+"'", "origin"));
+        destinationList.getItems().addAll(fc.getMostSearched("'"+dateOne+"'", "'"+dateTwo+"'", "destination"));
         System.out.println("Leitartilraun: " + dateOne + " : " + dateTwo);
     }
 
