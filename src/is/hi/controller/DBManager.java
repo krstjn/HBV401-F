@@ -121,7 +121,7 @@ public class DBManager {
     }
 
     public int getNrOffBookings(String startDate, String endDate) throws SQLException {
-        String query = "SELECT count(*) FROM queries WHERE bookingDate > " + startDate + " AND bookingDate < " + endDate;
+        String query = "SELECT count(*) FROM passengers WHERE bookingDate > " + startDate + " AND bookingDate < " + endDate;
 
         PreparedStatement p = conn.prepareStatement(query);
         ResultSet r = p.executeQuery();
