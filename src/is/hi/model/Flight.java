@@ -11,6 +11,7 @@ public class Flight {
     private String flightID;
     private String from;
     private String to;
+    private String departureDate;
     private String departureTime;
     private String arrivalTime;
     private int ecoCapacity;
@@ -65,10 +66,18 @@ public class Flight {
         this.to = to;
     }
 
-    public void setDepartureTime(String departureTime){
-        this.departureTime = departureTime;
+    public void setDepartureTime(int departureTime){
+        String time = String.valueOf(departureTime);
+        for(int i = 0; i < (4 - time.length());i++)
+            time ="0"+time;
+        String min = time.substring(time.length()-2);
+        String h = time.substring(0,time.length()-2);
+        this.departureTime = h+":"+min;
     }
 
+    public void setDepartureDate(String departureDate){
+        this.departureDate = departureDate;
+    }
     public void setArrivalTime(String arrivalTime){
         this.arrivalTime = arrivalTime;
     }
@@ -117,11 +126,14 @@ public class Flight {
         return to;
     }
 
-    public String getDepartureTime() {
-        String date = departureTime.substring(0,4) + '-' + departureTime.substring(4,6) + '-'+departureTime.substring(6,8);
+    public String getDepartureDate() {
+        String date = departureDate.substring(0,4) + '-' + departureDate.substring(4,6) + '-'+departureDate.substring(6,8);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
         LocalDate localDate = LocalDate.parse(date);
         return localDate.format(formatter);
+    }
+    public String getDepartureTime(){
+        return departureTime;
     }
 
     public String getArrivalTime() {

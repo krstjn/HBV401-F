@@ -52,7 +52,8 @@ public class DBManager {
             flight.setFlightID(r.getString("flightID"));
             flight.setFrom(r.getString("origin"));
             flight.setTo(r.getString("destination"));
-            flight.setDepartureTime(r.getString("departureDate"));
+            flight.setDepartureDate(r.getString("departureDate"));
+            flight.setDepartureTime(r.getInt("departureTime"));
             flight.setArrivalTime(r.getString("returnDate"));
             flight.setEcoCapacity(r.getInt("ecoCapacity"));
             flight.setBusCapacity(r.getInt("busCapacity"));

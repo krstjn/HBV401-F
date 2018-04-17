@@ -263,7 +263,10 @@ public class FlightView {
         JFXButton close = new JFXButton("Loka");
         book.setStyle("-fx-background-color: green");
         close.setStyle("-fx-background-color: red");
-        content.setActions(close, book);
+        if(f.getAvailableSeats().size() < 10)
+            content.setActions(new Label("Aðeins "+ (f.getEcoCapacity()+f.getBusCapacity())+" sæti eftir"),close, book);
+        else
+            content.setActions(close, book);
         JFXDialog flightInfo = new JFXDialog(dialogWindow, content,JFXDialog.DialogTransition.TOP);
         book.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -331,20 +334,20 @@ public class FlightView {
         TableColumn destinationCol = new TableColumn("Áfangastaður");
         destinationCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("to"));
-        TableColumn priceCol = new TableColumn("Price");
+        TableColumn priceCol = new TableColumn("Verð");
         priceCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, Integer>("ecoPrice"));
-        TableColumn airlineCol = new TableColumn("Airline");
+        TableColumn airlineCol = new TableColumn("Flugfélag");
         airlineCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("airline"));
         TableColumn departureCol = new TableColumn("Brottfaratími");
         departureCol.setCellValueFactory(
-                new PropertyValueFactory<Flight, Date>("departureTime"));
-        TableColumn capacityCol = new TableColumn("Laus sæti");
-        capacityCol.setCellValueFactory(
-                new PropertyValueFactory<Flight, Integer>("ecoCapacity"));
+                new PropertyValueFactory<Flight, Date>("departureDate"));
+        TableColumn timingCol = new TableColumn("Klukkan");
+        timingCol.setCellValueFactory(
+                new PropertyValueFactory<Flight, Integer>("departureTime"));
         originTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        originTable.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol,departureCol, capacityCol);
+        originTable.getColumns().addAll(originCol, destinationCol, priceCol, airlineCol, departureCol, timingCol);
         TableColumn originCol1 = new TableColumn("Brottfarastaður");
         originCol1.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("from"));
@@ -359,11 +362,11 @@ public class FlightView {
                 new PropertyValueFactory<Flight, String>("airline"));
         TableColumn departureCol1 = new TableColumn("Brottfaratími");
         departureCol1.setCellValueFactory(
-                new PropertyValueFactory<Flight, Date>("departureTime"));
-        TableColumn capacityCol1 = new TableColumn("Laus sæti");
-        capacityCol1.setCellValueFactory(
-                new PropertyValueFactory<Flight, Integer>("ecoCapacity"));
+                new PropertyValueFactory<Flight, Date>("departureDate"));
+        TableColumn timingCol1 = new TableColumn("Klukkan");
+        timingCol1.setCellValueFactory(
+                new PropertyValueFactory<Flight, String>("departureTime"));
         returnTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        returnTable.getColumns().addAll(originCol1, destinationCol1, priceCol1, airlineCol1,departureCol1, capacityCol1);
+        returnTable.getColumns().addAll(originCol1, destinationCol1, priceCol1, airlineCol1,departureCol1, timingCol1);
     }
 }
