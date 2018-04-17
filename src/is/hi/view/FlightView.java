@@ -273,7 +273,7 @@ public class FlightView {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("booking.fxml"));
                     root = loader.load();
                     BookingView controller = loader.getController();
-                    controller.setFlight(f,fc);
+                    controller.setFlight(f, fc);
                     Scene scene = new Scene(root);
                     Stage secStage = new Stage();
                     secStage.setTitle("Bóka flug frá " + f.getFrom() + " til " + f.getTo());

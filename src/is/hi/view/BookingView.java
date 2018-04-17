@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /************************
  * Höfundur: Kristján P.*
@@ -80,7 +81,8 @@ public class BookingView {
                 " til " + flight.getTo() +
                 ".     Verð(economy): " + flight.getEcoPrice()+
                 ".     Verð(business): " + flight.getBusPrice());
-
+        ArrayList<String> seats = flight.getAvailableSeats();
+        seat.getItems().addAll(seats);
     }
 
     @FXML
@@ -92,7 +94,5 @@ public class BookingView {
         ObservableList<String> seating = FXCollections.observableArrayList("Economy", "Business");
         seatingClass.getItems().addAll(seating);
 
-        ObservableList<String> seats = FXCollections.observableArrayList("4A", "5B");
-        seat.getItems().addAll(seats);
     }
 }
