@@ -19,9 +19,20 @@ public class Flight {
     private int busPrice;
     private String airline;
     private ArrayList<Passenger> passengers;
+    private ArrayList<String> availableSeats;
 
     public Flight(){
+
         passengers = new ArrayList<Passenger>();
+        availableSeats = new ArrayList<String>();
+        for(char row = 'A'; row < 20 + 'A'; row++) {
+            for(int nr = 1; nr <= 6; nr++) {
+                String s = "";
+                s = row + String.valueOf(nr);
+                availableSeats.add(s);
+            }
+        }
+
     }
 
     public boolean isFullEco() {
@@ -79,6 +90,14 @@ public class Flight {
 
     public void setAirline(String airline) {
         this.airline = airline;
+    }
+
+    public void setSeats(ArrayList<String> bookedSeats) {
+        for(int i = 0; i < bookedSeats.size(); i++){
+            if(availableSeats.contains(bookedSeats.get(i))){
+                availableSeats.remove(bookedSeats.get(i));
+            }
+        }
     }
 
     /*******************************************************
