@@ -1,6 +1,7 @@
 package is.hi.controller;
 
 import is.hi.model.Flight;
+import is.hi.model.Passenger;
 import is.hi.model.Query;
 
 import java.sql.*;
@@ -76,12 +77,40 @@ public class DBManager {
         return flights;
     }
 
-    public ArrayList<Flight> getFlights() { return flights; }
+    public void bookFlight(Passenger passenger) throws SQLException {
+        String u = "INSERT INTO passengers(firstName, lastName, gender, seat, luggage, class, birthdate, flightID)" +
+                "VALUES(?,?,?,?,?,?,?,?)";
+        PreparedStatement p = conn.prepareStatement(u);
+        p.setString(1, passenger.getFirst());
+        p.setString(2, passenger.getLast());
+        p.setString(3, String.valueOf(passenger.getGender()));
+        p.setString(4, passenger.getSeatNumber());
+        p.setBoolean(5, passenger.getLuggage());
+        p.setString(6, passenger.getSeatingClass());
+        p.setString(7, passenger.getBirthDate());
+        p.setString(8, passenger.getFlightID());
 
+        p.executeUpdate();
+
+        if(passenger.getSeatingClass() == "eco"){
+            u = "UPDATE flights SET ecoCapacity = ecoCapacity - 1 WHERE flightID == " + passenger.getFlightID();
+        } else {
+            u = "UPDATE flights SET busCapacity = busCapacity - 1 WHERE flightID == " + passenger.getFlightID();
+        }
+        p = conn.prepareStatement(u);
+        p.executeUpdate();
+    }
 
     /*
     ADMIN FÖll
      */
+
+    public boolean checkAdmin(String username, String password) throws SQLException {
+        String q = "SELECT * FROM users WHERE username = " + username + " AND password = " + password;
+        PreparedStatement p = conn.prepareStatement(q);
+        ResultSet r = p.executeQuery();
+        return r.getFetchSize() == 1;
+    }
 
     public int getNrOffSearches(String startDate, String endDate) throws SQLException {
         String query = "SELECT count(*) FROM queries WHERE searchDate > " + startDate + " AND searchDate < " + endDate;
@@ -92,14 +121,24 @@ public class DBManager {
     }
 
     public int getNrOffBookings(String startDate, String endDate) throws SQLException {
-        String query = "SELECT count(*) FROM queries WHERE bookingDate > " + startDate + " AND bookingDate < " + endDate;
+        String query = "SELECT count(*) FROM passengers WHERE bookingDate > " + startDate + " AND bookingDate < " + endDate;
 
         PreparedStatement p = conn.prepareStatement(query);
         ResultSet r = p.executeQuery();
         return r.getInt(1);
     }
 
+    public ArrayList<String> getMostSearched(String startDate, String endDate, String from) throws SQLException {
+        String query = "SELECT " + from + " , COUNT(" + from + ") AS cnt FROM queries WHERE bookingDate >= " + startDate +
+                " AND bookingDate <= " + endDate +  "GROUP BY " + from + " ORDER BY cnt DESC";
+        PreparedStatement p = conn.prepareStatement(query);
+        ResultSet r = p.executeQuery();
 
-
-
+        ArrayList<String> list = new ArrayList<>();
+        while(r.next()) {
+            list.add(r.getString("origin"));
+        }
+        r.close();
+        return list;
+    }
 }

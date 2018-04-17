@@ -22,12 +22,16 @@ public class FlightController {
         return flights;
     }
 
-    public void bookFlight(Passenger p) {
-
+    public void bookFlight(Passenger p) throws SQLException {
+        db.bookFlight(p);
     }
 
     public ArrayList<String> runQuery(String s) throws SQLException{
         return db.runQuery(s);
+    }
+
+    public boolean checkAdmin(String username, String password) throws SQLException {
+        return db.checkAdmin(username, password);
     }
 
     public int getNrOffSearches(String s1, String s2) throws SQLException {
@@ -36,6 +40,10 @@ public class FlightController {
 
     public int getNrOffBookings(String s1, String s2) throws SQLException {
         return db.getNrOffBookings(s1, s2);
+    }
+
+    public ArrayList<String> getMostSearched(String startDate, String endDate, String from) throws SQLException {
+        return db.getMostSearched(startDate, endDate, from);
     }
 
 
