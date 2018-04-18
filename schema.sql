@@ -25,6 +25,7 @@ CREATE TABLE passengers
   , class VARCHAR(64) NOT NULL
   , birthdate DATE NOT NULL
   , flightID VARCHAR(5) REFERENCES flights(flightID)
+  , bookingDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
   , UNIQUE(flightID, seat)
   );
 
@@ -34,7 +35,7 @@ CREATE TABLE queries
   , origin VARCHAR(64)
   , destination VARCHAR(64)
   , departureTime VARCHAR(64)
-  , departureDate DATE
+  , departureDate INTEGER
   , duration INTEGER
   , returnDate DATE
   , availableSeats INTEGER CHECK(availableSeats > 0)
