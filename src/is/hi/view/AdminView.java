@@ -9,8 +9,11 @@ import javafx.scene.control.Label;
 
 import javax.print.DocFlavor;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class AdminView {
     @FXML private Label bookings;
@@ -22,18 +25,31 @@ public class AdminView {
 
     private FlightController fc;
 
+
+    public static String fromCalendar(final Calendar calendar) {
+        Date date = calendar.getTime();
+        String formatted = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .format(date);
+        return formatted.substring(0, 22) + ":" + formatted.substring(22);
+    }
+
+    public static String getDate() {
+        return fromCalendar(GregorianCalendar.getInstance());
+    }
     @FXML
     private void searchQueries(ActionEvent e) throws SQLException{
-        Date one = new Date();
-        one.setHours(0);
-        String dateOne = (one.toString());
+        String dateOne = getDate();
+        dateOne = dateOne.substring(0,11)+"00:00:00";
         if(startDate.getValue() != null)
             dateOne = startDate.getValue().toString();
-        Date two = new Date();
-        two.setHours(24);
-        String dateTwo = (two.toString());
+
+        System.out.println("dateOne: " + dateOne);
+
+        String dateTwo = getDate();
+        dateTwo = dateTwo.substring(0,11)+"23:59:59";
         if(endDate.getValue() != null)
             dateTwo = endDate.getValue().toString();
+        System.out.println("dateTwo: " + dateTwo);
 
 
 
