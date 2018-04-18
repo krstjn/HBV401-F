@@ -255,6 +255,11 @@ public class FlightView {
         System.out.println("Table clicked");
         TableView<Flight> table = (TableView<Flight>)e.getSource();
         Flight f = table.getSelectionModel().getSelectedItem();
+        if(f == null){
+            dialogWindow.setMouseTransparent(true);
+            return;
+        }
+        table.getSelectionModel().clearSelection();
         System.out.println(f.getFrom() + " " + f.getTo());
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text(f.getFrom() + " - " + f.getTo()));
