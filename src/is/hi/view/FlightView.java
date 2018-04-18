@@ -123,8 +123,19 @@ public class FlightView {
             if(day < 10) d += "0";
             q.setDepartureDate(Integer.valueOf(year +m+month+d+day));
         }
-        q.setMaxPrice((int)maxPrice.getValue() * 1000);
-        q1.setMaxPrice((int)maxPrice.getValue() * 1000);
+        if(returnFlight.getValue() != null){
+            int year = returnFlight.getValue().getYear();
+            int month = returnFlight.getValue().getMonthValue();
+            int day = returnFlight.getValue().getDayOfMonth();
+
+            String m = "";
+            String d = "";
+            if(month < 10) m += "0";
+            if(day < 10) d += "0";
+            q1.setDepartureDate(Integer.valueOf(year +m+month+d+day));
+        }
+        q.setMaxPrice((int)Math.ceil(maxPrice.getValue()) * 1000);
+        q1.setMaxPrice((int)Math.ceil(maxPrice.getValue()) * 1000);
         ArrayList<Flight> flightsOut;
         ArrayList<Flight> flightsBack;
 

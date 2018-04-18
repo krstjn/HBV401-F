@@ -149,6 +149,7 @@ public class Query {
     }
 
     public String[] getFilters(){
+
         String[] queries = {
                 getOriginString(),
                 getDestinationString(),

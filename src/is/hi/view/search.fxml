@@ -20,9 +20,9 @@
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="Innskráning">
+        <Menu mnemonicParsing="false" text="Skrá">
                <items>
-            <MenuItem mnemonicParsing="false" onAction="#login" text="Um forritið" />
+            <MenuItem mnemonicParsing="false" onAction="#login" text="Skrá inn" />
                </items></Menu>
         <Menu mnemonicParsing="false" text="Hjálp" />
       </menus>

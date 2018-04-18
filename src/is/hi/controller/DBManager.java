@@ -143,6 +143,8 @@ public class DBManager {
     public ArrayList<String> getMostSearched(String startDate, String endDate, String from) throws SQLException {
         String query = "SELECT " + from + " , COUNT(" + from + ") AS cnt FROM queries WHERE searchDate >= " + startDate +
                 " AND " + endDate + " >= searchDate GROUP BY " + from + " ORDER BY cnt DESC";
+        String x = "SELECT " + from + " , COUNT(" + from + ") AS cnt FROM queries WHERE searchDate BETWEEN " + startDate + " AND " + endDate;
+
         PreparedStatement p = conn.prepareStatement(query);
         ResultSet r = p.executeQuery();
 
@@ -150,6 +152,7 @@ public class DBManager {
         while(r.next()) {
             String s = r.getString(1);
             if(s != null){
+                s += " : " + r.getInt(2);
                 list.add(s);
             }
         }
