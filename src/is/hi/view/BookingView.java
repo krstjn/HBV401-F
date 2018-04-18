@@ -39,14 +39,34 @@ public class BookingView {
     }
 
     private boolean validateBooking(){
-        if(firstName.getText().length() == 0) return false;
-        if(lastName.getText().length() == 0) return false;
-        if(birthday.getValue() == null) return false;
-        if(gender.getValue() == null) return false;
-        if(seat.getItems() == null) return false;
-        if(seatingClass.getValue() == null) return false;
+        boolean success = true;
+        if(firstName.getText().length() == 0){
+            success = false;
+            firstName.setUnFocusColor(Color.web("#f00"));
+        } else firstName.setUnFocusColor(Color.web("#4d4d4d"));
 
-        return true;
+        if(lastName.getText().length() == 0) {
+            success = false;
+            lastName.setUnFocusColor(Color.web("#f00"));
+        } else lastName.setUnFocusColor(Color.web("#4d4d4d"));
+        if(birthday.getValue() == null) {
+            success = false;
+            birthday.setStyle("-fx-border-color: red; -fx-border-width: 0 0 2 0");
+        } else birthday.setStyle("-fx-border-width: 0");
+        if(gender.getValue() == null) {
+            success = false;
+            gender.setUnFocusColor(Color.web("#f00"));
+        } else gender.setUnFocusColor(Color.web("#4d4d4d"));
+        if(seat.getValue() == null) {
+            success = false;
+            seat.setUnFocusColor(Color.web("#f00"));
+        } else seat.setUnFocusColor(Color.web("#4d4d4d"));
+        if(seatingClass.getValue() == null) {
+            success = false;
+            seatingClass.setUnFocusColor(Color.web("#f00"));
+        } else seatingClass.setUnFocusColor(Color.web("#4d4d4d"));
+
+        return success;
     }
 
     @FXML

@@ -73,7 +73,7 @@ public class FlightView {
     private void searchFlights(ActionEvent e){
         Query q = new Query();
         Query q1 = new Query();
-        if(cbAirline.getValue() != null) {
+        if(cbAirline.getValue() != null && !cbAirline.getValue().equals("Alveg sama") ){
             q.setAirline(String.valueOf(cbAirline.getValue()));
             q1.setAirline(String.valueOf(cbAirline.getValue()));
         }
@@ -280,14 +280,14 @@ public class FlightView {
         JFXButton close = new JFXButton("Loka");
         book.setStyle("-fx-background-color: green");
         close.setStyle("-fx-background-color: red");
-        Label message = new Label();
-        if(f.getAvailableSeats().size() < 10)
-            content.setActions(new Label("Aðeins "+ (f.getEcoCapacity()+f.getBusCapacity())+" sæti eftir"),close, book);
+        Label message;
+        System.out.println(f.getAvailableSeats().size());
+        if(f.getAvailableSeats().size() <= 10)
+            message = new Label("Aðeins "+ (f.getEcoCapacity()+f.getBusCapacity())+" sæti eftir");
         else
-            message.setText("");
-
+            message = new Label("");
+        message.setTextFill(Color.RED);
         content.setActions(message, close, book);
-            content.setActions(close, book);
         JFXDialog flightInfo = new JFXDialog(dialogWindow, content,JFXDialog.DialogTransition.TOP);
         book.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -332,12 +332,13 @@ public class FlightView {
             a = fc.runQuery("Select destination from flights WHERE ecoCapacity > 0 GROUP BY destination ORDER BY destination");
             cbDestination.getItems().addAll(a);
             a = fc.runQuery("Select airline from flights WHERE ecoCapacity > 0 GROUP BY airline");
+            cbAirline.getItems().add("Alveg sama");
             cbAirline.getItems().addAll(a);
         } catch (SQLException error){
             System.out.println(error);
         }
 
-        ObservableList<String> timings = FXCollections.observableArrayList("Morgunflug", "Dagsflug", "Kvöldflug", "Næturflug");
+        ObservableList<String> timings = FXCollections.observableArrayList("Alveg sama", "Morgunflug", "Dagsflug", "Kvöldflug", "Næturflug");
         cbTiming.getItems().addAll(timings);
 
         ObservableList<String> classes = FXCollections.observableArrayList("Economy", "Buisness");
