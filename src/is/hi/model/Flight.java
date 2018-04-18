@@ -27,8 +27,8 @@ public class Flight {
         passengers = new ArrayList<Passenger>();
 
         availableSeats = new ArrayList<String>();
-        for(char row = 'A'; row < 20 + 'A'; row++) {
-            for(int nr = 1; nr <= 6; nr++) {
+        for(int nr = 1; nr <=20; nr++) {
+            for(char row = 'A'; row < 6 + 'A'; row++) {
                 availableSeats.add(String.valueOf(nr) + row);
             }
         }

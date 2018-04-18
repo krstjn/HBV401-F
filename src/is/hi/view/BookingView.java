@@ -9,11 +9,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /************************
  * Höfundur: Kristján P.*
@@ -86,7 +89,20 @@ public class BookingView {
 
             passenger.setSeatingClass(seatingClass.getValue().toString());
 
-            fc.bookFlight(passenger);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Staðfesta bókun");
+            alert.setHeaderText("Þú ert að bóka flug frá " + flight.getFrom() + " til " + flight.getTo());
+            alert.setContentText("Viltu klára þessa bókun?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                fc.bookFlight(passenger);
+                closeWindow(e);
+            } else {
+
+            }
+
         } else {
             error.setText("Fylla þarf alla stjörnumerkta reiti");
             error.setTextFill(Color.web("#f00"));
