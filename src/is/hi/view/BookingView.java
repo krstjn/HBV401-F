@@ -94,7 +94,8 @@ public class BookingView {
             alert.setHeaderText("Þú ert að bóka flug frá " + flight.getFrom() + " til " + flight.getTo());
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
+            System.out.println(result.get());
+            if (result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE){
                 fc.bookFlight(passenger);
                 closeWindow(e);
             } else {
