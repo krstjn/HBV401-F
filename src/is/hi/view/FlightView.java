@@ -16,10 +16,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -32,6 +29,7 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -391,5 +389,31 @@ public class FlightView {
                 new PropertyValueFactory<Flight, String>("departureTime"));
         returnTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         returnTable.getColumns().addAll(originCol1, destinationCol1, priceCol1, airlineCol1,departureCol1, timingCol1);
+        departureFlight.setValue(LocalDate.now());
+        departureFlight.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if(!empty) {
+                    if(date.compareTo(LocalDate.now()) < 0) {
+                        setDisable(true);
+                    }
+                }
+
+            }
+        });
+        returnFlight.setValue(LocalDate.now());
+        returnFlight.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if(!empty) {
+                    if(date.compareTo(departureFlight.getValue()) >= 0 && date.compareTo(returnFlight.getValue()) <= 0) {
+                        setStyle("-fx-background-color: rgba(124,255,86,0.61)");
+                    }
+                }
+
+            }
+        });
     }
 }
