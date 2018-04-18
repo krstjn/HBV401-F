@@ -10,7 +10,7 @@
    <children>
       <JFXDatePicker fx:id="startDate" editable="false" layoutX="66.0" layoutY="46.0" promptText="Upphafsdagsetning" />
       <JFXDatePicker fx:id="endDate" editable="false" layoutX="305.0" layoutY="46.0" promptText="Lokadagsetning" />
-      <JFXButton layoutX="67.0" layoutY="345.0" style="-fx-background-color: #f00;" text="Loka" />
+      <JFXButton layoutX="67.0" layoutY="345.0" onAction="#closeWindow" style="-fx-background-color: #f00;" text="Loka" />
       <JFXListView fx:id="originList" layoutX="35.0" layoutY="179.0" prefHeight="143.0" prefWidth="248.0" />
       <JFXListView fx:id="destinationList" layoutX="305.0" layoutY="179.0" prefHeight="143.0" prefWidth="248.0" />
       <Label layoutX="39.0" layoutY="90.0" prefHeight="27.0" prefWidth="224.0" text="Fjöldi leita á tímabilinu:" />

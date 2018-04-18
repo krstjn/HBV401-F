@@ -134,8 +134,8 @@ public class FlightView {
             if(day < 10) d += "0";
             q1.setDepartureDate(Integer.valueOf(year +m+month+d+day));
         }
-        q.setMaxPrice((int)Math.ceil(maxPrice.getValue()) * 1000);
-        q1.setMaxPrice((int)Math.ceil(maxPrice.getValue()) * 1000);
+        q.setMaxPrice((int)Math.round(maxPrice.getValue()) * 1000);
+        q1.setMaxPrice((int)Math.round(maxPrice.getValue()) * 1000);
         ArrayList<Flight> flightsOut;
         ArrayList<Flight> flightsBack;
 
@@ -348,7 +348,8 @@ public class FlightView {
 
         maxPriceLabel.setText((int)maxPrice.getValue() + " þús");
         maxPrice.valueProperty().addListener((ov, old_val, new_val) ->
-                maxPriceLabel.setText((int)Math.ceil(new_val.doubleValue()) + " þús"));
+                maxPriceLabel.setText((int)Math.round(new_val.doubleValue()) + " þús"));
+
         TableColumn originCol = new TableColumn("Brottfarastaður");
         originCol.setCellValueFactory(
                 new PropertyValueFactory<Flight, String>("from"));

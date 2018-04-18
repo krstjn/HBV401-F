@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXListView;
 import is.hi.controller.FlightController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 
 import javax.print.DocFlavor;
@@ -48,12 +49,10 @@ public class AdminView {
 
         String dateTwo = getDate();
         System.out.println(dateTwo);
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"+":"+"Z");
-        dateTwo = LocalDate.parse(dateTwo.substring(0,10)).plusDays(1).toString();
-        dateTwo = dateTwo+"T23:59:59";
+
+        dateTwo = dateTwo.substring(0,11)+"23:59:59";
         if(endDate.getValue() != null)
             dateTwo = endDate.getValue().toString();
-            dateTwo = LocalDate.parse(dateTwo).plusDays(1).toString();
         System.out.println("dateTwo: " + dateTwo);
 
 
@@ -72,6 +71,11 @@ public class AdminView {
 
     public void setController(FlightController fc){
         this.fc = fc;
+    }
+
+    @FXML
+    public void closeWindow(ActionEvent e){
+        ((Node)(e.getSource())).getScene().getWindow().hide();
     }
     @FXML
     public void initialize(){
