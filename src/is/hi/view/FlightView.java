@@ -215,6 +215,7 @@ public class FlightView {
                             Scene scene = new Scene(root);
                             Stage secStage = new Stage();
                             secStage.setScene(scene);
+                            secStage.setResizable(false);
                             secStage.show();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -290,6 +291,7 @@ public class FlightView {
                     Stage secStage = new Stage();
                     secStage.setTitle("Bóka flug frá " + f.getFrom() + " til " + f.getTo());
                     secStage.setScene(scene);
+                    secStage.setResizable(false);
                     secStage.show();
                     //((Node) (event.getSource())).getScene().getWindow().hide();
                 } catch (IOException e) {
