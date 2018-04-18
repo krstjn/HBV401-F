@@ -9,9 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
 import java.sql.SQLException;
@@ -89,11 +87,11 @@ public class BookingView {
 
             passenger.setSeatingClass(seatingClass.getValue().toString());
 
-
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            ButtonType afram = new ButtonType("Já", ButtonBar.ButtonData.OK_DONE);
+            ButtonType stop = new ButtonType("Nei", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Viltu klára þessa bókun?", afram, stop);
             alert.setTitle("Staðfesta bókun");
             alert.setHeaderText("Þú ert að bóka flug frá " + flight.getFrom() + " til " + flight.getTo());
-            alert.setContentText("Viltu klára þessa bókun?");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
