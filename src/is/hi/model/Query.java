@@ -1,5 +1,6 @@
 package is.hi.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Query {
@@ -124,7 +125,22 @@ public class Query {
         else return "busCapacity <> 0" ;
     }
     private String getDepartureDateString() {
-        if(departureDate < 0) return null;
+        if(departureDate < 0) {
+            LocalDate today = LocalDate.now();
+            String year = String.valueOf(today.getYear());
+            int m = today.getMonthValue();
+            System.out.println("month " + m);
+            int d = today.getDayOfMonth();
+            System.out.println("day "+d);
+            String month = String.valueOf(m);
+            String day = String.valueOf(d);
+            if(m < 10)
+                month = "0"+month;
+            if(d < 10 )
+                day = "0"+day;
+
+            return "departureDate >= " +year+month+day;
+        }
         return "departureDate = " + departureDate;
     }
     private String getMaxPriceString() {
